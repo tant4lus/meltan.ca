@@ -1,0 +1,1 @@
+This is a placeholder for hexo-theme-cactus. Install it via npm or git clone.
