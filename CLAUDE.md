@@ -20,6 +20,7 @@ GitHub Actions (`.github/workflows/deploy.yml`), region `us-west-2`:
 - PR against `main` → builds and syncs to `s3://meltan.ca-staging`, comments the staging URL on the PR
 - Push to `main` → builds and syncs to `s3://meltan.ca`
 - `AWS_ACCESS_KEY_ID` and `AWS_REGION` are GitHub Actions **vars**; `AWS_SECRET_ACCESS_KEY` is a **secret** — `deploy-staging` reads these from the `stage` environment, `deploy-production` from the `prod` environment
+- `deploy-production` also invalidates CloudFront (distribution ID `E2ZSINZGTN4ML`, read from the `CLOUDFRONT_DISTRIBUTION_ID` var in the `prod` environment) after the S3 sync, since production sits behind CloudFront and staging doesn't
 
 Local preview: `npx hexo server` (http://localhost:4000). Build: `npx hexo generate` (outputs to `public/`).
 
