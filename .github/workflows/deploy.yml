@@ -22,7 +22,7 @@ jobs:
       - name: Build and deploy
         uses: ./.github/actions/build-and-deploy
         with:
-          s3-bucket: s3://meltan.ca-staging
+          s3-bucket: s3://${{ vars.S3_BUCKET }}
           aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
@@ -31,10 +31,12 @@ jobs:
         uses: actions/github-script@v7
         env:
           AWS_REGION: ${{ vars.AWS_REGION }}
+          S3_BUCKET: ${{ vars.S3_BUCKET }}
         with:
           script: |
             const region = process.env.AWS_REGION;
-            const url = `http://meltan.ca-staging.s3-website-${region}.amazonaws.com`;
+            const bucket = process.env.S3_BUCKET;
+            const url = `http://${bucket}.s3-website-${region}.amazonaws.com`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -54,7 +56,7 @@ jobs:
       - name: Build and deploy
         uses: ./.github/actions/build-and-deploy
         with:
-          s3-bucket: s3://meltan.ca
+          s3-bucket: s3://${{ vars.S3_BUCKET }}
           aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
