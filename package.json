@@ -6,6 +6,9 @@
     "build": "hexo generate",
     "start": "hexo server"
   },
+  "hexo": {
+    "version": "7.3.0"
+  },
   "dependencies": {
     "hexo": "^7.2.0",
     "hexo-cli": "^4.3.1",
@@ -13,8 +16,9 @@
     "hexo-generator-category": "^1.0.0",
     "hexo-generator-index": "^3.0.0",
     "hexo-generator-tag": "^2.0.0",
-    "hexo-renderer-marked": "^4.1.0",
     "hexo-renderer-ejs": "^2.0.0",
-    "hexo-server": "^3.0.0"
+    "hexo-renderer-marked": "^4.1.0",
+    "hexo-server": "^3.0.0",
+    "hexo-theme-landscape": "^1.1.0"
   }
 }

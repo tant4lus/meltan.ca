@@ -1,3 +1,8 @@
+# Hexo
+public/
+.deploy*/
+db.json
+
 # Logs
 logs
 *.log
