@@ -7,8 +7,6 @@ tags:
 
 When I decided to build this site, the obvious default answer was WordPress. It's what most people reach for, and it works. I get it, I used to have a hosted Wordpress site but the management was time consuming. For a personal blog, it felt like way more than I needed — so I went with Hexo, a static site generator, deployed straight to S3 instead.
 
-<!-- more -->
-
 **Cost was the first thing I looked at.** Since this was coming out of my bank account, this matters a lot to me. WordPress needs somewhere to run PHP and a database, which in practice means an EC2 instance humming along 24/7 — plus storage, backups, and usually a managed database. A static site is just files. S3 charges for the storage and requests it actually serves, which for a low-traffic personal blog is pennies a month. There's no server sitting idle waiting for someone to read a post.
 
 **No server also means no patching treadmill.** WordPress core, PHP, plugins, themes, the underlying OS — all of it needs regular updates, and falling behind is how sites get compromised. A static site has no database to inject, no plugin ecosystem to audit, no admin login for bots to hammer. It's a fully serverless setup — S3, CloudFront, and GitHub Actions runners are all managed compute I don't own or patch. The attack surface mostly isn't there.
