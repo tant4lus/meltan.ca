@@ -19,7 +19,7 @@ Everything in `package.json` is handled by `npm install`/`npm ci` — no need to
 GitHub Actions (`.github/workflows/deploy.yml`), region `us-west-2`:
 - PR against `main` → builds and syncs to `s3://meltan.ca-staging`, comments the staging URL on the PR
 - Push to `main` → builds and syncs to `s3://meltan.ca`
-- `AWS_ACCESS_KEY_ID` and `AWS_REGION` are GitHub Actions **vars**; `AWS_SECRET_ACCESS_KEY` is a **secret** (both under the `AWS` environment)
+- `AWS_ACCESS_KEY_ID` and `AWS_REGION` are GitHub Actions **vars**; `AWS_SECRET_ACCESS_KEY` is a **secret** — `deploy-staging` reads these from the `stage` environment, `deploy-production` from the `prod` environment
 
 Local preview: `npx hexo server` (http://localhost:4000). Build: `npx hexo generate` (outputs to `public/`).
 
