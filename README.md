@@ -1,55 +1,59 @@
-# Hexo Blog Starter
+# meltan.ca
 
-This repository is a starter template for a static blog powered by [Hexo](https://hexo.io/) and deployed to an AWS S3 bucket using GitHub Actions. It features:
+Personal blog powered by [Hexo](https://hexo.io/), using the [Hiker](https://github.com/iTimeTraveler/hexo-theme-hiker) theme, deployed to AWS S3 via GitHub Actions.
 
-- ✍️ Markdown-based blogging
-- 🖼️ Minimalist photo-friendly theme (`hexo-theme-cactus`)
-- 🏷️ Tag support for topics like #travel, #devops, #hiking, and #diving
-- ☁️ Continuous deployment to S3 on every push to `main`
-
----
-
-## 🚀 How It Works
-
-- Posts are written in Markdown inside `source/_posts/`
-- Tags are automatically parsed from post front-matter
-- GitHub Actions installs Hexo, builds the static site, and syncs `public/` to your S3 bucket
-- No server or backend required
+- Markdown-based blogging, posts live in `source/_posts/`
+- Tag support (e.g. #travel, #devops, #hiking, #diving)
+- Continuous deployment: pull requests deploy to a staging bucket, merges to `main` deploy to production
 
 ---
 
-## 🧪 Local Development
-
-To preview your blog locally before pushing:
+## Local development
 
 ```bash
-git clone https://github.com/your-username/your-blog.git
-cd your-blog
+git clone https://github.com/tant4lus/meltan.ca.git
+cd meltan.ca
 npm install
 npx hexo server
 ```
 
-Visit http://localhost:4000 in your browser.
+Visit http://localhost:4000.
 
----
+To build the static site without serving it:
 
-## 🚚 Deployment to S3 (via GitHub Actions)
-
-Add these GitHub Secrets to your repository:
-
-| Secret Name               | Description                        |
-|---------------------------|------------------------------------|
-| `AWS_ACCESS_KEY_ID`       | Your AWS access key                |
-| `AWS_SECRET_ACCESS_KEY`   | Your AWS secret key                |
-| `AWS_REGION`              | (optional) AWS region (default: `us-west-2`) |
-
-Update the bucket name in `.github/workflows/deploy.yml`:
-```yaml
-aws s3 sync public/ s3://YOUR_BUCKET_NAME --delete
+```bash
+npx hexo generate
 ```
 
+Output goes to `public/`.
+
 ---
 
-## 📄 License
+## Theme
 
-This template is open-source and provided for personal or commercial use.
+The site uses [Hiker](https://github.com/iTimeTraveler/hexo-theme-hiker) (`hexo-theme-hiker`), installed directly from GitHub since it isn't published to npm. Theme configuration lives in `_config.hiker.yml` at the repo root — see the [theme's README](https://github.com/iTimeTraveler/hexo-theme-hiker#readme) for the full list of options (homepage background, sidebar widgets, code highlight style, comment systems, etc).
+
+---
+
+## Deployment (GitHub Actions → S3)
+
+`.github/workflows/deploy.yml` runs on every PR and push to `main`, region `us-west-2`:
+
+| Trigger | Bucket |
+|---|---|
+| Pull request → `main` | `meltan.ca-staging` (deploy comment posted on the PR) |
+| Push to `main` | `meltan.ca` (production) |
+
+Both jobs run under the `AWS` GitHub environment, which needs:
+
+| Name | Kind | Description |
+|---|---|---|
+| `AWS_ACCESS_KEY_ID` | Variable | AWS access key |
+| `AWS_REGION` | Variable | AWS region (`us-west-2`) |
+| `AWS_SECRET_ACCESS_KEY` | Secret | AWS secret key |
+
+---
+
+## License
+
+Personal project — not intended as a reusable template.
