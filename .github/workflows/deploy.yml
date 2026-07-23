@@ -10,6 +10,7 @@ jobs:
   deploy-staging:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    environment: AWS
     permissions:
       contents: read
       pull-requests: write
@@ -54,6 +55,7 @@ jobs:
   deploy-production:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    environment: AWS
 
     steps:
       - name: Checkout repo
