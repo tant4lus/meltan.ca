@@ -27,6 +27,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: Block search engines from indexing staging
+        run: aws s3 cp .github/robots-staging.txt s3://${{ vars.S3_BUCKET }}/robots.txt
+        env:
+          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+
       - name: Comment staging URL on PR
         uses: actions/github-script@v7
         env:
