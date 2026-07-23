@@ -41,3 +41,4 @@ docs: update README for Hiker theme
 - Branch off `main`, open a PR back to `main` — this is what triggers the staging deploy, so it's the way to preview changes before they go live
 - PR description: a `## Summary` of what changed and why, plus a `## Test plan` checklist (what was verified locally, e.g. `hexo generate` succeeds, pages checked in browser)
 - Check the bot-posted staging URL comment before merging
+- The repo has "Automatically delete head branches" enabled, so merged branches are cleaned up by GitHub automatically — no manual `git branch -d`/`git push origin --delete` needed after merging
