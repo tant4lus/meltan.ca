@@ -39,18 +39,22 @@ The site uses [Hiker](https://github.com/iTimeTraveler/hexo-theme-hiker) (`hexo-
 
 `.github/workflows/deploy.yml` runs on every PR and push to `main`, region `us-west-2`:
 
-| Trigger | Bucket |
-|---|---|
-| Pull request → `main` | `meltan.ca-staging` (deploy comment posted on the PR) |
-| Push to `main` | `meltan.ca` (production) |
-
-Both jobs run under the `AWS` GitHub environment, which needs:
-
-| Name | Kind | Description |
+| Trigger | Environment | Bucket |
 |---|---|---|
-| `AWS_ACCESS_KEY_ID` | Variable | AWS access key |
-| `AWS_REGION` | Variable | AWS region (`us-west-2`) |
-| `AWS_SECRET_ACCESS_KEY` | Secret | AWS secret key |
+| Pull request → `main` | `stage` | `meltan.ca-staging` (deploy comment posted on the PR) |
+| Push to `main` | `prod` | `meltan.ca` (production) |
+
+Bucket names are stored as the `S3_BUCKET` var per environment, not hardcoded in the workflow. Each environment needs:
+
+| Name | Kind | `stage` | `prod` |
+|---|---|---|---|
+| `AWS_ACCESS_KEY_ID` | Variable | ✓ | ✓ |
+| `AWS_REGION` | Variable | ✓ | ✓ |
+| `S3_BUCKET` | Variable | ✓ | ✓ |
+| `AWS_SECRET_ACCESS_KEY` | Secret | ✓ | ✓ |
+| `CLOUDFRONT_DISTRIBUTION_ID` | Variable | | ✓ |
+
+Resource identifiers should always be stored as vars, never hardcoded in workflows or code — see [#20](https://github.com/tant4lus/meltan.ca/issues/20).
 
 ---
 

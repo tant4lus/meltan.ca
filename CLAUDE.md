@@ -17,10 +17,13 @@ Everything in `package.json` is handled by `npm install`/`npm ci` — no need to
 ## Deployment
 
 GitHub Actions (`.github/workflows/deploy.yml`), region `us-west-2`:
-- PR against `main` → builds and syncs to `s3://meltan.ca-staging`, comments the staging URL on the PR
-- Push to `main` → builds and syncs to `s3://meltan.ca`
+- PR against `main` → builds and syncs to the staging bucket (`meltan.ca-staging`), comments the staging URL on the PR
+- Push to `main` → builds and syncs to the production bucket (`meltan.ca`)
+- Bucket names are read from the `S3_BUCKET` var (not hardcoded in the workflow) — `meltan.ca-staging` in the `stage` environment, `meltan.ca` in `prod`
 - `AWS_ACCESS_KEY_ID` and `AWS_REGION` are GitHub Actions **vars**; `AWS_SECRET_ACCESS_KEY` is a **secret** — `deploy-staging` reads these from the `stage` environment, `deploy-production` from the `prod` environment
-- `deploy-production` also invalidates CloudFront (distribution ID `E2ZSINZGTN4ML`, read from the `CLOUDFRONT_DISTRIBUTION_ID` var in the `prod` environment) after the S3 sync, since production sits behind CloudFront and staging doesn't
+- `deploy-production` also invalidates CloudFront after the S3 sync (distribution ID read from the `CLOUDFRONT_DISTRIBUTION_ID` var in the `prod` environment, not hardcoded in the repo), since production sits behind CloudFront and staging doesn't
+
+Resource identifiers (bucket names, distribution IDs, etc.) belong in GitHub Actions vars, not hardcoded in workflows or code — see #20.
 
 Local preview: `npx hexo server` (http://localhost:4000). Build: `npx hexo generate` (outputs to `public/`).
 
