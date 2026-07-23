@@ -52,8 +52,11 @@ archive_pagination: true
 # Post Article's Content
 post_catalog:
   enable: true
-# 开启主页摘要
-post_excerpt: true
+# Post excerpts on index pages. The theme's built-in post_excerpt hard-truncates
+# to a fixed character count regardless of paragraph breaks. Off uses Hexo's
+# native <!-- more --> excerpt instead, so each post controls its own preview
+# length — posts without a <!-- more --> tag show in full on the index.
+post_excerpt: false
 
 
 # Content
