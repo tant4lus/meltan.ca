@@ -12,7 +12,7 @@ Personal blog built with [Hexo](https://hexo.io/), theme [Hiker](https://github.
 
 Everything in `package.json` is handled by `npm install`/`npm ci` — no need to document those individually. What's not npm-managed:
 
-- **Node 20** — matches the version CI uses (`.github/workflows/deploy.yml`). There's no `.nvmrc` or `engines` field enforcing this locally, so mismatches are possible.
+- **Node 24** — matches the version CI uses (`.github/workflows/deploy.yml`). There's no `.nvmrc` or `engines` field enforcing this locally, so mismatches are possible.
 
 ## Deployment
 
