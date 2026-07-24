@@ -27,6 +27,12 @@ Resource identifiers (bucket names, distribution IDs, etc.) belong in GitHub Act
 
 Local preview: `npx hexo server` (http://localhost:4000). Build: `npx hexo generate` (outputs to `public/`).
 
+## Writing posts
+
+- After drafting or editing post content, let Melissa review the wording before committing it — don't commit prose on her behalf until she's confirmed it's ready. This is distinct from code/config changes, which don't need this extra review gate.
+- Proofread drafts for typos/spelling before committing, even when the wording is hers verbatim — flag anything that looks like an error and confirm before changing it, rather than silently rewriting her voice.
+- After drafting, run `npx hexo generate` and `npx hexo server`, then open the post's local preview URL (http://localhost:4000/...) in her actual browser (e.g. via `open <url>` on macOS, or navigating a real Chrome tab) so she can see it rendered before it goes to a staging PR.
+
 ## Commit messages
 
 One commit per unrelated concern — don't fold two unrelated changes (e.g. a theme change and a docs update) into a single commit just because they happened in the same session. If a commit message needs "and" to describe it, it's probably two commits.
