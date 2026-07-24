@@ -8,6 +8,13 @@ Personal blog built with [Hexo](https://hexo.io/), theme [Hiker](https://github.
 - Theme settings live in `_config.hiker.yml` at the repo root (not in `node_modules/hexo-theme-hiker/`, since that isn't tracked)
 - Posts: `source/_posts/*.md`. Static pages (e.g. About): `source/<slug>/index.md`
 
+### Categories and tags
+
+Every post should set one category (broad section) and one or more tags (specific topics):
+
+- **Categories**: `Tech` (DevOps/infrastructure/cloud), `Adventures` (backpacking, bike touring, skiing, kayaking), `Crafting` (sewing, watercolour)
+- **Tags**: freeform within a category, but reuse existing ones where they fit — e.g. `devops`, `aws`, `ci-cd`, `terraform`, `github-actions` for Tech; `backpacking`, `bike-touring`, `skiing`, `kayaking`, `csia` for Adventures; `sewing`, `watercolour` for Crafting. Check `/tags/` and `/categories/` for what already exists before inventing a new one.
+
 ### Non-npm dependencies
 
 Everything in `package.json` is handled by `npm install`/`npm ci` — no need to document those individually. What's not npm-managed:
