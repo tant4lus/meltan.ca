@@ -11,7 +11,7 @@ tags:
 
 I shipped what should have been the most boring change possible: replacing the About page's one-line placeholder with real content. I knew there were going to be problems as I had done the bare minimum testing for this. I only had one post written and was only testing my pipeline, but not the content. Staging looked fine on the PR preview. I merged, production deployed, and `https://meltan.ca/about/` came back with a 403.
 
-**The first clue was that it wasn't universal.** The homepage loaded fine. Every other path — `/about/`, `/archives/`, even a blog post URL — came back `AccessDenied`. Staging, which I'd just checked, had no problem at all. So it wasn't the page content, and it wasn't a general outage. Something about production specifically didn't know how to serve a directory.
+**The first clue was that it wasn't universal.** The homepage loaded fine. Every other path — `/about/`, `/archives/`, even a blog post URL — came back `AccessDenied`. Staging, which I'd just checked, had no problem at all. So it wasn't the page content, and it wasn't a general outage. Something about production specifically didn't know how to serve a directory. This goes to show you what happens when your production setup doesn't quite match your staging setup. But it was a cost trade-off I was willing to take for a personal blog, but not a mission-critical application. Since I knew my whole setup and this is not complex, it was easy to troubleshoot quickly.
 
 **Reading the response headers instead of just the status code got me there fast.**
 
