@@ -1,6 +1,8 @@
 ---
 title: Why This Blog Isn't on WordPress
 date: 2026-07-23
+categories:
+  - Tech
 tags:
   - devops
 ---
