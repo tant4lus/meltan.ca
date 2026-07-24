@@ -9,7 +9,7 @@ tags:
   - cloudfront
 ---
 
-I shipped what should have been the most boring change possible: replacing the About page's one-line placeholder with real content. Staging looked fine on the PR preview. I merged, production deployed, and `https://meltan.ca/about/` came back with a 403.
+I shipped what should have been the most boring change possible: replacing the About page's one-line placeholder with real content. I knew there were going to be problems as I had done the bare minimum testing for this. I only had one post written and was only testing my pipeline, but not the content. Staging looked fine on the PR preview. I merged, production deployed, and `https://meltan.ca/about/` came back with a 403.
 
 **The first clue was that it wasn't universal.** The homepage loaded fine. Every other path — `/about/`, `/archives/`, even a blog post URL — came back `AccessDenied`. Staging, which I'd just checked, had no problem at all. So it wasn't the page content, and it wasn't a general outage. Something about production specifically didn't know how to serve a directory.
 
@@ -47,7 +47,7 @@ function handler(event) {
 
 Paths ending in `/` get `index.html` appended. Paths with no file extension (someone requesting `/about` instead of `/about/`) get `/index.html` appended. Anything that looks like an actual file — `.css`, `.js`, `.svg`, `.xml` — is left alone. This is the standard pattern AWS documents for exactly this S3-plus-OAI setup, and it's a handful of lines running at the edge instead of a second copy of the bucket policy to maintain.
 
-**Wiring it up is where I initially made more work for myself than necessary.** My first pass had me copy the ETag out of one command's JSON output and paste it into the next, by hand, three separate times — once for the function, twice for the distribution update. That's exactly the kind of step that's fine once and a liability the second time someone runs it. The whole thing threads through `jq` instead:
+If this is a problem you face, then here is your fix. Every value that matters — both ETags, the function ARN — comes from parsing the previous command's own output. Nothing gets typed in by hand, nothing gets fat-fingered from a terminal scrollback, and the whole sequence can be re-run or scripted without a human in the loop copying values between windows.
 
 ```bash
 # 1. Create the function and capture its ETag + ARN directly from the response
@@ -97,8 +97,6 @@ aws cloudfront update-distribution --id "$DIST_ID" --if-match "$DIST_ETAG" --dis
 aws cloudfront create-invalidation --distribution-id "$DIST_ID" --paths "/*"
 ```
 
-Every value that matters — both ETags, the function ARN — comes from parsing the previous command's own output. Nothing gets typed in by hand, nothing gets fat-fingered from a terminal scrollback, and the whole sequence can be re-run or scripted without a human in the loop copying values between windows.
-
 **Fixing that surfaced a second, unrelated problem.** `/tags/` and `/categories/` were also 403ing, and for a second I assumed it was the same CloudFront issue. It wasn't — after the function was live, those two paths still failed, because the pages genuinely didn't exist in the build output. Hexo generates a page per tag (`tags/devops/index.html`) but not a landing page listing all of them, unless you explicitly add one. The fix was two small files — `source/tags/index.md` and `source/categories/index.md`, each with a `layout` front-matter field matching the theme's `tags.ejs`/`categories.ejs` templates — the same kind of gap as the About page stub that started this whole investigation.
 
-Two bugs, same afternoon, same root cause category: infrastructure that had never actually been exercised past the homepage. It's a fitting first real incident for a blog whose whole premise is that skipping WordPress doesn't mean skipping the work — it just means the work looks like this instead.
+Two bugs, same afternoon, same root cause category: testing that had never actually gone past the homepage to check that hexo ran. A future me problem will be to figure out how to add testing into my pipeline for a blog.
