@@ -6,7 +6,7 @@ Personal blog built with [Hexo](https://hexo.io/), theme [Hiker](https://github.
 
 - Hexo 7, theme `hexo-theme-hiker` (installed from GitHub via `github:iTimeTraveler/hexo-theme-hiker` in package.json — it isn't published to npm)
 - Theme settings live in `_config.hiker.yml` at the repo root (not in `node_modules/hexo-theme-hiker/`, since that isn't tracked)
-- Posts: `source/_posts/*.md`. Static pages (e.g. About): `source/<slug>/index.md`
+- Posts: `source/_posts/<year>/*.md` — one folder per year, since keeping everything flat in `_posts/` doesn't scale. If a year folder ever gets unwieldy, split further into `<year>/<month>/` then. Static pages (e.g. About): `source/<slug>/index.md`
 
 ### Categories and tags
 
@@ -14,6 +14,10 @@ Every post should set one category (broad section) and one or more tags (specifi
 
 - **Categories**: `Tech` (DevOps/infrastructure/cloud), `Adventures` (backpacking, bike touring, skiing, kayaking), `Crafting` (sewing, watercolour)
 - **Tags**: freeform within a category, but reuse existing ones where they fit — e.g. `devops`, `aws`, `ci-cd`, `terraform`, `github-actions` for Tech; `backpacking`, `bike-touring`, `skiing`, `kayaking`, `csia` for Adventures; `sewing`, `watercolour` for Crafting. Check `/tags/` and `/categories/` for what already exists before inventing a new one.
+
+### Permalinks and post filing
+
+Permalinks (`_config.yml`'s `permalink: :year/:month/:day/:title/`) are date- and slug-driven, not path-driven — but the `:title` token isn't read from a `slug` front-matter field. This Hexo version ignores `slug:` in front matter entirely; it unconditionally recomputes the slug from the post's source path relative to `_posts/`, parsed against `new_post_name`. That's why `new_post_name` is set to `:year/:title.md` — it matches the `<year>/<title>.md` layout above, so the year folder gets parsed out instead of folded into the slug. If a post's path doesn't match that pattern (not inside a year folder, or nested one level deeper than expected), the leftover path segments leak into the slug and produce a wrong or doubled URL — verify with `npx hexo server` and check the actual rendered link, don't assume front matter alone controls it. `hexo new` already respects `new_post_name`, so posts created that way land in the right year folder automatically.
 
 ### Non-npm dependencies
 
