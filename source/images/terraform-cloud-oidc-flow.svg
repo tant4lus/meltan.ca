@@ -1,0 +1,78 @@
+<svg viewBox="0 0 760 760" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <title>Terraform Cloud workflow: PR plan to merge apply, authenticated to AWS via OIDC</title>
+  <desc>On every pull request to meltan.ca-iac, Terraform Cloud runs a speculative plan, assuming a read-scoped IAM role in AWS over OIDC, and posts the result as a PR check. On merge to main, Terraform Cloud queues a real run, assumes the workspace's own IAM role over OIDC using short-lived credentials, applies the change against AWS, and stores the resulting state in Terraform Cloud itself.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="760" height="760" rx="12" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- Left lane: PR / speculative plan -->
+  <text x="170" y="50" text-anchor="middle" font-size="15" font-weight="600" fill="#1f2937">On every Pull Request</text>
+
+  <g font-size="13.5" fill="#1f2937">
+    <rect x="20" y="70" width="300" height="56" rx="8" fill="#eef4fc" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="170" y="103" text-anchor="middle">Push branch / open PR</text>
+
+    <line x1="170" y1="126" x2="170" y2="152" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="20" y="156" width="300" height="56" rx="8" fill="#eef4fc" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="170" y="189" text-anchor="middle">Terraform Cloud: speculative plan</text>
+
+    <line x1="170" y1="212" x2="170" y2="238" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+    <rect x="20" y="242" width="300" height="56" rx="8" fill="#f3eefc" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="170" y="270" text-anchor="middle">Assume read-scoped role via OIDC</text>
+    <text x="170" y="286" text-anchor="middle" font-size="11.5" fill="#6b7280">no static AWS keys involved</text>
+
+    <line x1="170" y1="298" x2="170" y2="324" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="20" y="328" width="300" height="56" rx="8" fill="#eef4fc" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="170" y="357" text-anchor="middle">Plan posted as a PR check</text>
+    <text x="170" y="374" text-anchor="middle" font-size="12" fill="#6b7280">reviewed before merge</text>
+  </g>
+
+  <!-- Connector between lanes -->
+  <text x="365" y="337" text-anchor="middle" font-size="11.5" fill="#6b7280">approved &amp;</text>
+  <text x="365" y="350" text-anchor="middle" font-size="11.5" fill="#6b7280">merged</text>
+  <line x1="320" y1="365" x2="410" y2="365" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+  <!-- Right lane: merge / apply -->
+  <text x="570" y="313" text-anchor="middle" font-size="15" font-weight="600" fill="#1f2937">On merge to main</text>
+
+  <g font-size="13.5" fill="#1f2937">
+    <rect x="420" y="328" width="300" height="56" rx="8" fill="#eef4fc" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="570" y="361" text-anchor="middle">Merge to main; TFC queues a run</text>
+
+    <line x1="570" y1="384" x2="570" y2="410" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+    <rect x="420" y="414" width="300" height="56" rx="8" fill="#f3eefc" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="570" y="442" text-anchor="middle">Assume workspace's own role via OIDC</text>
+    <text x="570" y="458" text-anchor="middle" font-size="11.5" fill="#6b7280">short-lived, scoped to just its resources</text>
+
+    <line x1="570" y1="470" x2="570" y2="496" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="420" y="500" width="300" height="56" rx="8" fill="#eef4fc" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="570" y="533" text-anchor="middle">terraform apply against AWS</text>
+
+    <line x1="570" y1="556" x2="570" y2="582" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="420" y="586" width="300" height="56" rx="8" fill="#eef4fc" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="570" y="614" text-anchor="middle">S3 / CloudFront / Route 53 updated</text>
+    <text x="570" y="630" text-anchor="middle" font-size="11.5" fill="#6b7280">only the resources that role can touch</text>
+
+    <line x1="570" y1="642" x2="570" y2="668" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+    <rect x="420" y="672" width="300" height="56" rx="8" fill="#e8f7ee" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="570" y="705" text-anchor="middle" font-weight="600" fill="#166534">State stored in Terraform Cloud</text>
+  </g>
+</svg>
