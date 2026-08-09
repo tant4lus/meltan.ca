@@ -37,13 +37,10 @@ jobs:
       - name: Comment staging URL on PR
         uses: actions/github-script@v7
         env:
-          AWS_REGION: ${{ vars.AWS_REGION }}
-          S3_BUCKET: ${{ vars.S3_BUCKET }}
+          STAGING_URL: ${{ vars.STAGING_URL }}
         with:
           script: |
-            const region = process.env.AWS_REGION;
-            const bucket = process.env.S3_BUCKET;
-            const url = `http://${bucket}.s3-website-${region}.amazonaws.com`;
+            const url = process.env.STAGING_URL;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
